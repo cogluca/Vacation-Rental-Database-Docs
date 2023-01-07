@@ -1,3 +1,7 @@
+# Vacation rental service
+
+### Di Gianluca Cognigni
+
 # Requisiti iniziali
 
 Si vuole realizzare una base di dati per un servizio che permette di affittare e prenotare
@@ -88,6 +92,7 @@ Underlined for derivation constraints
 | Prenotazione | Segno dell’intento di un utente di voler alloggiare in un alloggio |  | Ospite, Alloggio |
 | Recensione | Insieme di valutazioni effettuate da un utente (sia ospite che host) sulla base di un pernottamento in un alloggio | Review | Prenotazione, Utente |
 | Commento | Commento lasciato da un utente su una recensione o in risposta ad un commento di un’altro utente |  | Utente, possibilmente Thread, |
+| Thread di Discussione | Insieme di commenti uno in risposta all’altro |  | Commento |
 | Soggiorno | Periodo in cui un ospite soggiorna in un alloggio disponibile nella piattaforma |  | Ospite, Alloggio |
 | Pagamento | Versamento di valore monetario per un servizio di pernottamento |  | Prenotazione |
 | Metodo di Pagamento | Metodo in cui vien fatto un pagamento per una prenotazione |  | Pagamento, Prenotazione |
@@ -137,8 +142,8 @@ riferimento per completare e disambiguare i requisiti.
 Fig. 1: Dettagli di un appartamento.
 
 Al termine del soggiorno, gli ospiti e gli host si possono recensire a vicenda. La recensione
-fatta dagli ospiti comprende due commenti (uno per l’appartamento e uno per l’host) e una serie di
-punteggi in una scala da 1 a 5 su dimensioni come pulizia dell’alloggio, comunicazione dell’host , posizione e rapporto qualità/prezzo dell’alloggio. Il punteggio  complessivo del soggiorno è una media dei punteggi ricevuti sulle singole dimensioni citate prima (pulizia dell’alloggio, comunicazione dell’host, posizione e rapporto qualità/prezzo dell’alloggio. Le recensioni fatte dai host comprendono solo un commento testuale. 
+fatta dagli ospiti comprende due testi (uno per l’appartamento e uno per l’host) e una serie di
+punteggi in una scala da 1 a 5 su dimensioni come pulizia dell’alloggio, comunicazione dell’host , posizione e rapporto qualità/prezzo dell’alloggio. Il punteggio  complessivo del soggiorno è una media dei punteggi ricevuti sulle singole dimensioni citate prima (pulizia dell’alloggio, comunicazione dell’host, posizione e rapporto qualità/prezzo dell’alloggio. Le recensioni fatte dai host comprendono solo un testo. 
 
 Le recensioni di entrambi (host ed ospite) possono essere visibili o non visibili. Diventano visibili quando
 sia host che ospite prenotante hanno fatto la recensione oppure se uno dei due tra host ed ospite prenotante non ha fatto la recensione, l’altra recensione diventa visibile dopo 7 giorni dalla fine del soggiorno. Gli host e gli ospiti possono commentare più volte le recensioni in cui sono coinvolti, creando un thread di discussione.
@@ -280,11 +285,11 @@ Gli host e gli ospiti possono commentare più volte le recensioni in cui sono c
 Le recensioni sono visibili sui profili degli utenti suddivise in base a quelle ricevute come
 ospite e come host.
 
-### Commento
+### Testo
 
-La recensione fatta dagli ospiti comprende due commenti (uno per l’appartamento e uno per l’host).
+La recensione fatta dagli ospiti comprende due testi (uno per l’appartamento e uno per l’host).
 
-Le recensioni degli host comprendono solo un commento testuale.
+Le recensioni degli host comprendono solo un testo.
 
 ### Soggiorno
 
@@ -326,13 +331,13 @@ liste di preferiti, ad esempio in base al viaggio che vogliono compiere.
 
 # Schema E.R + regole di business
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/68eef55a-1724-4eff-a723-c9dd465b9b59/Untitled.png)
+![Untitled](static_resources/E-R%20Diagram%20GIVE.png)
 
 ### Vincoli di integrità
 
 **Vincolo1:**
 
-Se un ospite fa una richiesta ad un alloggio già prenotato essa sarà rifiutata, il sistema mostra la disponibilità delle date selezionate dall’utente.
+Se un ospite fa una richiesta ad un alloggio già prenotato e confermato essa sarà rifiutata, il sistema mostra la disponibilità delle date selezionate dall’utente.
 
 **Vincolo2:**
 
@@ -769,21 +774,21 @@ C’è un risparmio interessante di accessi in lettura sull’ordine di accessi 
 
 1. L’attributo multivalore “foto” dell’entità Alloggio è stato trasformato in una relazione con una entità nel seguente modo:
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/13350a34-1581-42d5-a85e-a1a446a1612d/Untitled.png)
+    ![Untitled](static_resources/foto.png)
 
 1. Dai requisiti visibili è possibile identificare che un’entità Alloggio possa disporre di molteplici servizi, queste in fase iniziale è stato modellato con un attributo multi valore che poi in fase di ristrutturazione ho sostituito nel seguente modo
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eb21deca-dbdd-4b18-a10d-8e9a06483aaf/Untitled.png)
+    ![Untitled](static_resources/servizio.png)
     
 
 1. L’attributo multivalore numero dell’entità Utente è stato trasformato nel seguente modo
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9751813d-8e45-4bfc-9547-51552eff3178/Untitled.png)
+    ![Untitled](static_resources/telefono.png)
     
 
 1. Infine l’attributo composto punteggio dell’entità Recensione è stato ristrutturato nel seguente modo, anche per poter segnalare l’opzionalità del punteggio sia nel caso che l’ospite non completi la recensione del soggiorno che nel caso la recensione coinvolga un host che recensisce un’ospite
     
-    ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/1addf4e6-12d7-46e2-96c8-0dd2f3492e2c/Untitled.png)
+    ![Untitled](static_resources/foto.png)
     
 
 ### Scelta identificatori principali
@@ -798,7 +803,7 @@ L’utente può essere univocamente rappresentato da una email supponendo che il
 
 # Schema E.R ristrutturato
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/9dc632d1-d639-49ef-ae4a-c9036b4c2cf8/Untitled.png)
+![Untitled](static_resources/E-R%20Ristrutturato%20GIVE.png)
 
 # Schema relazionale
 
@@ -822,7 +827,7 @@ Preferiti(utente) referenzia Utente(email)
 
 Preferiti(alloggio) referenzia Alloggio(id)
 
-Prenotazione(id, dataInizio, dataFine, alloggio, costoTotale, prenotante*, stato)
+Prenotazione(id, dataInizio, dataFine, alloggio, costoTotale, prenotante, stato)
 
 Prenotazione(alloggio) referenzia Alloggio(id)
 
@@ -870,6 +875,12 @@ Commento(mandante) referenzia Utente(email)
 
 Commento(mandante) referenzia Utente(email)
 
+Interazione(top, down*)
+
+Interazione(top) referenzia Commento(id)
+
+Interazione(down) referenzia Commento(id)
+
 # DDL
 
 ### User
@@ -916,7 +927,7 @@ references "user"
 alter table "Ospite"
 owner to frankacarkan;
 
-### NumeroTelefono
+### Numero di telefono
 
 create table "NumeroTelefono"
 (
@@ -1092,6 +1103,42 @@ primary key (id, alloggio)
 );
 
 alter table "Servizio"
+owner to frankacarkan;
+
+### Punteggio
+
+create table "Punteggio"
+(
+id_alloggio    integer not null
+constraint "Punteggio_pk"
+primary key
+constraint "Punteggio_Alloggio_null_fk"
+references "Alloggio",
+pulizia        double precision,
+comunicazione  double precision,
+posizione      double precision,
+qualita_prezzo double precision,
+testo_alloggio varchar
+);
+
+alter table "Punteggio"
+owner to frankacarkan;
+
+### Interazione
+
+create table "Interazione"
+(
+top  integer not null
+constraint "Interazione_pk"
+primary key
+constraint "Interazione_Top"
+references "Commento",
+down integer
+constraint "Interazione___down"
+references "Commento"
+);
+
+alter table "Interazione"
 owner to frankacarkan;
 
 # Test scenario principale di successo
